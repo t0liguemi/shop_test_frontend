@@ -49,12 +49,12 @@ function searchBarQuery(e) { //Handles the query and results on the search bar
         searchBarResults.innerHTML += `<p class="list-group-item">No results found &#128542</p>`;
       }
       for (let i = 0; i < 5; i++) {
-        if (!data[i]) {}
-        else if (Object.keys(data[i]).length == 2) {
+        if (!data[i]) {} //If the data is empty, do nothing
+        else if (Object.keys(data[i]).length == 2) { //If the data is a category, create a button with the category name
             searchBarResults.innerHTML += `<button class="z-3 list-group-item list-group-item-action" id="qCat-${data[i].id}">${data[i].name} <small class="fw-light text-secondary">Category</small></button>`;
             let categoryQueryButton = document.getElementById(`qCat-${data[i].id}`);
             categoryQueryButton.addEventListener("click", () => {(currentLocation = "cat" + data[i].id), handleLocation();})
-        } else if (data[i]) {
+        } else if (data[i]) { //If the data is a product, create a button with the product name and its price
           searchBarResults.innerHTML += `<button class="z-3 list-group-item list-group-item-action" id="qProdCat-${data[i].category}">${data[i].name} <small class="fw-light">$${data[i].price}</small></button>`;
           let productQueryButton = document.getElementById(`qProdCat-${data[i].category}`);
           productQueryButton.addEventListener("click", () => {(currentLocation = "cat" + data[i].category), handleLocation();})
@@ -118,6 +118,8 @@ function handleDiscount(discount) { //Handles the behavior of the discount butto
   }
 }
 
+
+//VIEWS 
 const indexPage = async () => { //Creates the index page
   const htmlContent = `<div class="container py-2">
   <div class="row">
@@ -219,6 +221,7 @@ function showFilteredProducts() { //Shows the products after filtering, default 
   }
 }
 
+//Routing
 const handleLocation = async () => { //Calls the appropriate page after a click on a link
   searchBarResults.innerHTML = "";
   searchBar.value = "";
@@ -226,7 +229,5 @@ const handleLocation = async () => { //Calls the appropriate page after a click 
     indexPage();
   } else if (currentLocation.includes("cat")) {
     categoryPage(currentLocation.split("cat")[1]);
-  } else if (currentLocation === "search") {
-    searchPage();
   }
 };
