@@ -19,7 +19,7 @@ searchBar.addEventListener("submit", (e) => {
 
 
 function getCategories() { //Gets the categories from the server
-  fetch("http://127.0.0.1:8000/categories")
+  fetch("https://shop-test-backend.onrender.com/categories")
     .then((response) => {
       if (response.status == 200) {
         return response.json();
@@ -39,8 +39,7 @@ function searchBarQuery(e) { //Handles the query and results on the search bar
     searchBarResults.innerHTML = "";
     return;
   }
-  console.log("attempting query :" + query);
-  fetch(`http://127.0.0.1:8000/search?q=${encodeURIComponent(query)}`)
+  fetch(`https://shop-test-backend.onrender.com/search?q=${encodeURIComponent(query)}`)
     .then((response) => {
       searchBarResults.innerHTML = "";
       return response.json();
@@ -61,7 +60,6 @@ function searchBarQuery(e) { //Handles the query and results on the search bar
           productQueryButton.addEventListener("click", () => {(currentLocation = "cat" + data[i].category), handleLocation();})
         }
       }
-      console.log(data);
     });
 }
 
@@ -130,7 +128,6 @@ const indexPage = async () => { //Creates the index page
   <div class="row g-2" id="categoryContainer"></div>`;
   mainPage.innerHTML = htmlContent;
   const categoryContainer = document.getElementById("categoryContainer");
-  console.log(categories);
   for (let category of categories) {
     categoryContainer.innerHTML += `
         <div class="btn btn-primary fs-5 col-md-5 col-sm-12 mx-1" id="category-${category.id}">${category.name}</div>`;
@@ -144,7 +141,6 @@ const indexPage = async () => { //Creates the index page
 };
 
 const categoryPage = async (category) => { //Creates the category page with the fetched products and the discount buttons
-  console.log("changed to " + category);
   currentLocation = "cat" + category;
   const htmlContent = `<div class="container py-2">
     
@@ -173,23 +169,19 @@ const categoryPage = async (category) => { //Creates the category page with the 
   const buttonDiscount15percent = document.getElementById("15percentOffButton");
   const buttonDiscount20percent = document.getElementById("20percentOffButton");
   buttonDiscount5percent.addEventListener("click", () => {
-    console.log("5");
     handleDiscount(5);
   });
   buttonDiscount10percent.addEventListener("click", () => {
-    console.log("10");
     handleDiscount(10);
   });
   buttonDiscount15percent.addEventListener("click", () => {
-    console.log("15");
     handleDiscount(15);
   });
   buttonDiscount20percent.addEventListener("click", () => {
-    console.log("20");
     handleDiscount(20);
   });
 
-  products = await fetch(`http://127.0.0.1:8000/products/${category}`)
+  products = await fetch(`https://shop-test-backend.onrender.com/products/${category}`)
     .then((response) => {
       if (response.status == 200) {
         return response.json();
@@ -230,7 +222,6 @@ function showFilteredProducts() { //Shows the products after filtering, default 
 const handleLocation = async () => { //Calls the appropriate page after a click on a link
   searchBarResults.innerHTML = "";
   searchBar.value = "";
-  console.log("trying to go to "+currentLocation);
   if (currentLocation === "index") {
     indexPage();
   } else if (currentLocation.includes("cat")) {
